@@ -44,7 +44,7 @@ class Register extends HTMLElement{
             return;
         }
 
-        notify('successful register', 'success');
+        notify('successful registration', 'success');
     }
 
     render(){
