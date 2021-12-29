@@ -9,7 +9,7 @@ const template = (ctx) => html`
         <h1 class="display-4">Movies</h1>
         <p class="lead">Unlimited movies, TV shows, and more. Watch anywhere. Cancel anytime.</p>
     </div>
-    ${ctx.user.isAuthenticated && html`
+    ${ctx.isAuthenticated && html`
     <h1 class="text-center">Movies</h1>
         <section>
             <a href="#" class="btn btn-warning ">Add Movie</a>
@@ -64,7 +64,7 @@ const template = (ctx) => html`
 
 export default class Home extends HTMLElement{
      connectedCallback(){
-         this.user = getUserData();
+         Object.assign(this, getUserData());
          this.render();
      }
 
