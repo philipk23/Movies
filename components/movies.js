@@ -26,7 +26,6 @@ class Movies extends HTMLElement{
         getAllMovies()
             .then(movies => {
                 this.movies = movies;
-                console.log(this);
                 this.render();
             })
         this.render()
