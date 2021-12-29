@@ -1,4 +1,5 @@
 import { render, html } from 'https://unpkg.com/lit-html?module';
+import { Router } from 'https://unpkg.com/@vaadin/router';
 
 import { login } from '../services/authServices.js';
 
@@ -33,10 +34,10 @@ class Login extends HTMLElement{
         login(email, password)
             .then(res => {
                 notify('successful login', 'success');
+                Router.go('/');
             })
 
     }
-
     render(){
         render(template(this), this, { eventContext: this });
     }
