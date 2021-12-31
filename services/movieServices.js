@@ -9,7 +9,11 @@ const api = {
 export const getAllMovies = async (searchText) => {
     let res = await request(api.movies, 'GET');
 
-    return Object.keys(res).map(key => ({key, ...res[key]})).filter(x => !searchText || searchText == key.title);
+    //console.log(Object.keys(res).map(key => ({key, ...res[key]})));
+
+    //It works without the filter part
+
+    return Object.keys(res).map(key => ({key, ...res[key]}))//.filter(x => !searchText || searchText == key.title);
 }
 
 export const getOneById = async (id) => {
