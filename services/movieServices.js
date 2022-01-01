@@ -17,7 +17,17 @@ export const getAllMovies = async (searchText) => {
 }
 
 export const getOneById = async (id) => {
-    let res = await request(`${databaseUrl}/movies/${id}.json`);
+    let res = await request(`${databaseUrl}/movies/${id}.json`, 'GET');
 
     return res;
+}
+
+export const addMovie = async (movieData) => {
+    let res = await request(api.movies, 'POST', movieData);
+
+    return res;
+}
+
+export const onLike = async(id, creator) => {
+    let res = await request(`${databaseUrl}/movies/${id}/likes.json`, 'POST', {creator})
 }

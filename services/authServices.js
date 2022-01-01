@@ -45,6 +45,13 @@ export const getUserData = () => {
     }
 }
 
-export const logout = () => {
-    localStorage.setItem('auth', '');
-}
+export const logout = async () => {
+    try {
+        //let resp = firebase.auth().signOut();
+        localStorage.setItem('auth', '');
+        // console.log(resp);
+        //return resp;
+    } catch (error) {
+        throw error;
+    }
+};
