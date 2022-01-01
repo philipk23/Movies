@@ -15,7 +15,7 @@ const temaplate = (ctx) => html`
                 ${ctx.creator == ctx.user.email
                     ? html`
                         <a class="btn btn-danger" href="#">Delete</a>
-                        <a class="btn btn-warning" href="#">Edit</a>
+                        <a class="btn btn-warning" href="${location.pathname}/edit">Edit</a>
                     `
                     : html`
                         <a class="btn btn-primary" href="#">Like</a>

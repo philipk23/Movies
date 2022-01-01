@@ -28,6 +28,12 @@ export const addMovie = async (movieData) => {
     return res;
 }
 
+export const editMovie = async (id, movieData) => {
+    let res = await request(`${databaseUrl}/movies/${id}.json`, 'PATCH', movieData);
+
+    return res;
+}
+
 export const onLike = async(id, creator) => {
     let res = await request(`${databaseUrl}/movies/${id}/likes.json`, 'POST', {creator})
 }

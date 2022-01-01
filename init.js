@@ -7,6 +7,7 @@ import Movies from './components/movies.js';
 import MovieCard from './components/movie-card.js';
 import MovieDetails from './components/movie-details.js';
 import AddMovie from './components/add-movie.js';
+import EditMovie from './components/edit-movie.js';
 import { logout } from './services/authServices.js';
 
 customElements.define('home-component', Home);
@@ -16,6 +17,7 @@ customElements.define('movies-component', Movies);
 customElements.define('movie-card', MovieCard);
 customElements.define('movie-details', MovieDetails);
 customElements.define('add-movie-component', AddMovie);
+customElements.define('edit-movie-component', EditMovie);
 
 const root = document.getElementById('root');
 const router = new Router(root);
@@ -40,6 +42,10 @@ router.setRoutes([
     {
         path: '/add-movie',
         component: 'add-movie-component',
+    },
+    {
+        path: '/details/:id/edit',
+        component: 'edit-movie-component',
     },
     {
         path: '/logout',

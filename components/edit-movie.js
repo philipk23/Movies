@@ -1,28 +1,29 @@
 import { Router } from 'https://unpkg.com/@vaadin/router';
 import { html, render } from 'https://unpkg.com/lit-html?module';
 import { getUserData } from '../services/authServices.js';
-import { addMovie } from '../services/movieServices.js';
+import { editMovie, getOneById } from '../services/movieServices.js';
 
-const template = (ctx) => html`  
+const template = (ctx) => html`
     <form class="text-center border border-light p-5" action="#" method="" @submit="${ctx.onSubmit}">
-        <h1>Add Movie</h1>
+        <h1>Edit Movie</h1>
         <div class="form-group">
             <label for="title">Movie Title</label>
-            <input type="text" class="form-control" placeholder="Title" name="title" value="">
+            <input type="text" class="form-control" placeholder="Movie Title" value="${ctx.movieData.title}" name="title">
         </div>
         <div class="form-group">
             <label for="description">Movie Description</label>
-            <textarea class="form-control" placeholder="Description" name="description"></textarea>
+            <textarea class="form-control" placeholder="Movie Description..." name="description">${ctx.movieData.description}</textarea>
         </div>
         <div class="form-group">
             <label for="imageUrl">Image url</label>
-            <input type="text" class="form-control" placeholder="Image Url" name="imageUrl" value="">
+            <input type="text" class="form-control" placeholder="Image Url" value="${ctx.movieData.imageUrl}" name="imageUrl">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 `;
 
-export default class AddMovie extends HTMLElement{
+export default class EditMovie extends HTMLElement{
+
     connectedCallback(){
         this.render();
     }
@@ -36,18 +37,22 @@ export default class AddMovie extends HTMLElement{
             title: formData.get('title'),
             description: formData.get('description'),
             imageUrl: formData.get('imageUrl'),
-            creator: getUserData().email,
-        }
+        };
 
-        addMovie(movieData)
+        let movieId = location.pathname.replace('/details/', '').replace('/edit', '');
+
+        editMovie(movieId, movieData)
             .then(res => {
-                notify('successfully added a movie', 'success');
-                Router.go('/');
+                notify('Successfully edited the movie', 'success');
+                Router.go(`/details/${movieId}`)
             })
-
     }
 
     render(){
-        render(template(this), this, { eventContext: this });
+        getOneById(this.location.params.id)
+            .then(res => {
+                this.movieData = res;
+                render(template(this), this, { eventContext: this});
+            })
     }
 }
