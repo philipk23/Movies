@@ -1,5 +1,6 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
-import { getOneById } from '../services/movieServices.js';
+import { Router } from 'https://unpkg.com/@vaadin/router';
+import { deleteMovie, getOneById } from '../services/movieServices.js';
 import { getUserData } from '../services/authServices.js';
 
 const temaplate = (ctx) => html`
@@ -14,7 +15,7 @@ const temaplate = (ctx) => html`
                 <p>${ctx.description}</p>
                 ${ctx.creator == ctx.user.email
                     ? html`
-                        <a class="btn btn-danger" href="#">Delete</a>
+                        <a class="btn btn-danger" @click="${ctx.onDelete}">Delete</a>
                         <a class="btn btn-warning" href="${location.pathname}/edit">Edit</a>
                     `
                     : html`
@@ -44,6 +45,16 @@ class MovieDetails extends HTMLElement{
             .then(data => {
                 Object.assign(this, data);
                 this.render();
+            })
+    }
+
+    onDelete(){
+        let movieid = location.pathname.replace('/details/', '').replace('/edit', '');
+
+        deleteMovie(movieid)
+            .then(res => {
+                notify('Successfully deleted the movie', 'success');
+                Router.go('/');
             })
     }
 

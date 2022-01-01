@@ -34,6 +34,12 @@ export const editMovie = async (id, movieData) => {
     return res;
 }
 
+export const deleteMovie = async (id) => {
+    let res = await request(`${databaseUrl}/movies/${id}.json`, 'DELETE');
+
+    return res;
+}
+
 export const onLike = async(id, creator) => {
     let res = await request(`${databaseUrl}/movies/${id}/likes.json`, 'POST', {creator})
 }
