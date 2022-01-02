@@ -1,5 +1,6 @@
 import { Router } from 'https://unpkg.com/@vaadin/router';
 
+import Navigation from './components/navigation.js';
 import Home from "./components/home.js";
 import Register from './components/register.js';
 import Login from './components/login.js';
@@ -10,6 +11,7 @@ import AddMovie from './components/add-movie.js';
 import EditMovie from './components/edit-movie.js';
 import { logout } from './services/authServices.js';
 
+customElements.define('navigation-component', Navigation);
 customElements.define('home-component', Home);
 customElements.define('register-component', Register);
 customElements.define('login-component', Login);
