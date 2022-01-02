@@ -40,6 +40,8 @@ export const deleteMovie = async (id) => {
     return res;
 }
 
-export const onLike = async(id, creator) => {
-    let res = await request(`${databaseUrl}/movies/${id}/likes.json`, 'POST', {creator})
+export const likeMovie = async(id, email) => {
+    let res = await request(`${databaseUrl}/movies/${id}/likes/.json`, 'POST', {email});
+
+    return res;
 }

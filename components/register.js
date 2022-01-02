@@ -1,3 +1,4 @@
+import { Router } from 'https://unpkg.com/@vaadin/router';
 import { html, render } from 'https://unpkg.com/lit-html?module';
 import { register } from '../services/authServices.js';
 
@@ -48,6 +49,7 @@ class Register extends HTMLElement{
         register(email, password)
             .then(res => {
                 notify('successful registration', 'success');
+                Router.go('/');
             })
 
     }

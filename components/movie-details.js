@@ -1,7 +1,30 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
 import { Router } from 'https://unpkg.com/@vaadin/router';
-import { deleteMovie, getOneById } from '../services/movieServices.js';
+import { deleteMovie, getOneById, likeMovie } from '../services/movieServices.js';
 import { getUserData } from '../services/authServices.js';
+
+const getMovie = async(movieId, email) => {
+    let movieData = await getOneById(movieId);
+
+    console.log(movieData);
+
+    const likes = Object.values(movieData.likes || {});
+    const hasLiked = await hasAlreadyLiked(likes, email);
+    const likesCount = likes.length;
+
+    Object.assign(movieData, {
+        hasLiked,
+        likesCount
+    });
+
+    console.log(movieData);
+
+    return movieData;
+}
+
+const hasAlreadyLiked = async (likes, email) => {
+    return Object.values(likes).some(like => like.email == email);
+}
 
 const temaplate = (ctx) => html`
     <div class="container">
@@ -19,8 +42,10 @@ const temaplate = (ctx) => html`
                         <a class="btn btn-warning" href="${location.pathname}/edit">Edit</a>
                     `
                     : html`
-                        <a class="btn btn-primary" href="#">Like</a>
-                        <span class="enrolled-span">Liked 1</span>
+                        ${ctx.movieData.hasLiked
+                            ? html`<span class="enrolled-span">Liked ${ctx.movieData.likesCount}</span>`
+                            : html`<a class="btn btn-primary" @click="${ctx.onLike}">Like</a>`
+                        }
                     `
                 }
             </div>
@@ -48,18 +73,36 @@ class MovieDetails extends HTMLElement{
             })
     }
 
-    onDelete(){
-        let movieid = location.pathname.replace('/details/', '').replace('/edit', '');
+    onDelete(e){
+        e.preventDefault();
 
-        deleteMovie(movieid)
+        let movieId = location.pathname.replace('/details/', '').replace('/edit', '');
+
+        deleteMovie(movieId)
             .then(res => {
                 notify('Successfully deleted the movie', 'success');
                 Router.go('/');
             })
     }
 
+    onLike(e){
+        e.preventDefault();
+
+        let movieId = location.pathname.replace('/details/', '').replace('/edit', '');
+
+        likeMovie(movieId, getUserData().email)
+            .then(data => {
+                notify('Successfully liked the movie', 'success');
+                render();
+            });
+    }
+
     render(){
-        render(temaplate(this), this, { eventContext: this});
+        getMovie(this.location.params.id, getUserData().email)
+            .then(res => {
+                this.movieData = res;
+                render(temaplate(this), this, { eventContext: this});
+            })
     }
 }
 
